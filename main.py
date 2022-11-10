@@ -54,6 +54,7 @@ def scramble(face1, face2, face3, face4, face5, face6):
 
                 if faceSelect.squaresH[rowNum][cellNum] == 0:
                     faceSelect.squaresH[rowNum][cellNum] = i
+                    faceSelect.squaresV[cellNum][rowNum] = i
                     allocatedFalse = False
 
 face1 = Face(None, None, None, None)
