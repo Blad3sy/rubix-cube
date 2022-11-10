@@ -1,2 +1,3 @@
 # rubix-cube
- cool rubix-cube game im making
+
+ A game i'm making to simulate a Rubix Cube.
