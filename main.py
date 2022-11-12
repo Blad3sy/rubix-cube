@@ -26,6 +26,7 @@ class Face():
                     self.squaresH[i][t] = self.squaresV[t][i]          
 
     def push(self, direction, rowNum):
+        # TODO : find the problem that duplicates/deletes numbers, either here or in push()
 
         if direction == "U" or direction == "D":
             original = self.squaresV[rowNum]
@@ -66,24 +67,31 @@ class Face():
             self.setSquares(True)
 
 def scramble(face1, face2, face3, face4, face5, face6):
-    # generates 9 coordinates for each colour and allocates them
-    # if coord is already occupied (not 0, which is white), generate new one
-    # order is faceNum, rowNum, cellNum
+    # TODO : find the problem that duplicates/deletes numbers, either here or in push()
 
     faceList = [face1, face2, face3, face4, face5, face6]
+    directionList = ["L", "R", "U", "D"]
 
-    for i in range(1, 6):
-        for t in range(0, 9):
-            allocatedFalse = True
-            while allocatedFalse:
-                faceSelect = choice(faceList)
-                rowNum = randint(0, 2)
-                cellNum = randint(0, 2)
+    t = 0
 
-                if faceSelect.squaresH[rowNum][cellNum] == 0:
-                    faceSelect.squaresH[rowNum][cellNum] = i
-                    faceSelect.squaresV[cellNum][rowNum] = i
-                    allocatedFalse = False
+    for i in range(0, 6):
+        faceList[i].squaresH = [[t, t, t], [t, t, t], [t, t, t]]
+        faceList[i].setSquares(True)
+
+        t += 1
+
+        print(f"face{t} set")
+        print(faceList[i].squaresH)
+        print(faceList[i].squaresV)
+
+    for i in range(0, 21):
+        faceChose = choice(faceList)
+        directionChose = choice(directionList)
+        rowChose = randint(0, 2)
+
+        faceChose.push(directionChose, rowChose)
+    
+    print(" ")
 
 face1 = Face(None, None, None, None, None)
 face2 = Face(None, None, None, None, None)
@@ -92,15 +100,16 @@ face4 = Face(None, None, None, None, None)
 face5 = Face(None, None, None, None, None)
 face6 = Face(None, None, None, None, None)
 
-# TODO : FIX THIS
 # ORDER IS LEFT RIGHT ABOVE BELOW OPPOSITE
+# REFERENCE IS HOLDING CUBE LOOKING AT FACE1
+# FACE1 IS WHITE, FACE2 IS GREEN, FACE3 IS YELLOW, FACE4 IS BLUE, FACE5 IS ORANGE, FACE6 IS RED
 
-# face1.__init__(face2, face3, face4, face5, face6)
-# face2.__init__(face6, face1, face4, face5, face3)
-# face3.__init__(face1, face6, face4, face5, face2)
-# face4.__init__(face2, face3, face6, face1, face5)
-# face5.__init__(face2, face3, face1, face6, face4)
-# face6.__init__(face2, face3, face5, face4, face1)
+face1.__init__(face2, face4, face5, face6, face3)
+face2.__init__(face3, face1, face5, face6, face4)
+face3.__init__(face4, face2, face5, face6, face1)
+face4.__init__(face1, face3, face5, face6, face2)
+face5.__init__(face2, face4, face3, face1, face6)
+face6.__init__(face2, face4, face1, face3, face5)
 
 scramble(face1, face2, face3, face4, face5, face6)
 
