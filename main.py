@@ -26,9 +26,11 @@ class Face():
                     self.squaresH[i][t] = self.squaresV[t][i]          
 
     def push(self, direction, rowNum):
-        # TODO : find the problem that duplicates/deletes numbers, either here or in push()
 
         if direction == "U" or direction == "D":
+
+            # TODO : FIX BUG THAT CAUSES DUPLICATION / DELETION OF NUMBERS WHEN PUSHING UP OR DOWN
+            
             original = self.squaresV[rowNum]
             above = self.above.squaresV[rowNum]
             opposite = self.opposite.squaresV[rowNum]
@@ -67,7 +69,6 @@ class Face():
             self.setSquares(True)
 
 def scramble(face1, face2, face3, face4, face5, face6):
-    # TODO : find the problem that duplicates/deletes numbers, either here or in push()
 
     faceList = [face1, face2, face3, face4, face5, face6]
     directionList = ["L", "R", "U", "D"]
