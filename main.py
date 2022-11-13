@@ -28,9 +28,6 @@ class Face():
     def push(self, direction, rowNum):
 
         if direction == "U" or direction == "D":
-
-            # TODO : FIX BUG THAT CAUSES DUPLICATION / DELETION OF NUMBERS WHEN PUSHING UP OR DOWN
-            
             original = self.squaresV[rowNum]
             above = self.above.squaresV[rowNum]
             opposite = self.opposite.squaresV[rowNum]
@@ -48,6 +45,9 @@ class Face():
                 self.below.squaresV[rowNum] = original
         
             self.setSquares(False)
+            self.above.setSquares(False)
+            self.opposite.setSquares(False)
+            self.below.setSquares(False)
         
         else:
             original = self.squaresH[rowNum]
@@ -67,6 +67,9 @@ class Face():
                 self.right.squaresH[rowNum] = original
             
             self.setSquares(True)
+            self.left.setSquares(True)
+            self.opposite.setSquares(True)
+            self.right.setSquares(True)
 
 def scramble(face1, face2, face3, face4, face5, face6):
 
@@ -85,7 +88,7 @@ def scramble(face1, face2, face3, face4, face5, face6):
         print(faceList[i].squaresH)
         print(faceList[i].squaresV)
 
-    for i in range(0, 21):
+    for i in range(0, 100):
         faceChose = choice(faceList)
         directionChose = choice(directionList)
         rowChose = randint(0, 2)
@@ -121,7 +124,7 @@ print(face4.squaresH)
 print(face5.squaresH)
 print(face6.squaresH)
 
-face1.push("L", 2)
+face1.push("D", 2)
 print("PUSHED")
 
 print(face1.squaresH)
