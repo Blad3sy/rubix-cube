@@ -2,7 +2,7 @@ from random import randint, choice
 
 class Face():
 
-    def __init__(self, left, right, above, below, opposite):
+    def __init__(self, left = None, right = None, above = None, below = None, opposite = None):
 
         self.left = left
         self.right = right
@@ -76,17 +76,9 @@ def scramble(face1, face2, face3, face4, face5, face6):
     faceList = [face1, face2, face3, face4, face5, face6]
     directionList = ["L", "R", "U", "D"]
 
-    t = 0
-
     for i in range(0, 6):
-        faceList[i].squaresH = [[t, t, t], [t, t, t], [t, t, t]]
+        faceList[i].squaresH = [[i, i, i], [i, i, i], [i, i, i]]
         faceList[i].setSquares(True)
-
-        t += 1
-
-        print(f"face{t} set")
-        print(faceList[i].squaresH)
-        print(faceList[i].squaresV)
 
     for i in range(0, 100):
         faceChose = choice(faceList)
@@ -97,12 +89,12 @@ def scramble(face1, face2, face3, face4, face5, face6):
     
     print(" ")
 
-face1 = Face(None, None, None, None, None)
-face2 = Face(None, None, None, None, None)
-face3 = Face(None, None, None, None, None)
-face4 = Face(None, None, None, None, None)
-face5 = Face(None, None, None, None, None)
-face6 = Face(None, None, None, None, None)
+face1 = Face()
+face2 = Face()
+face3 = Face()
+face4 = Face()
+face5 = Face()
+face6 = Face()
 
 # ORDER IS LEFT RIGHT ABOVE BELOW OPPOSITE
 # REFERENCE IS HOLDING CUBE LOOKING AT FACE1
@@ -116,16 +108,6 @@ face5.__init__(face2, face4, face3, face1, face6)
 face6.__init__(face2, face4, face1, face3, face5)
 
 scramble(face1, face2, face3, face4, face5, face6)
-
-print(face1.squaresH)
-print(face2.squaresH)
-print(face3.squaresH)
-print(face4.squaresH)
-print(face5.squaresH)
-print(face6.squaresH)
-
-face1.push("D", 2)
-print("PUSHED")
 
 print(face1.squaresH)
 print(face2.squaresH)
