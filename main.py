@@ -1,4 +1,5 @@
 from random import randint, choice
+from guiConstruction import Main_Window, Button, Label, Image
 
 class Face():
 
@@ -115,3 +116,9 @@ print(face3.squaresH)
 print(face4.squaresH)
 print(face5.squaresH)
 print(face6.squaresH)
+
+mainWin = Main_Window("Rubik's Cube!", 500, 500)
+selectedFace = face1
+
+label = Label(mainWin.lay, str(selectedFace.squaresH), "C")
+mainWin.app.exit(mainWin.app.exec_())
