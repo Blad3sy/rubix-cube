@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget, QGridLayout
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 import sys
@@ -121,3 +121,22 @@ class Button(QPushButton):
         self.setText(self.text)
 
         self.show()
+
+class Grid(QGridLayout):
+
+    def __init__(self, parent):
+        super().__init__()
+
+        parent.addLayout(self)
+
+class Rubix_Face():
+
+    def __init__(self, parent, gridmap):
+        self.grid = Grid(parent)
+        self.grid.setSpacing(5)
+
+        for i in range(0, 3):
+            for t in range(0, 3):
+                gridItem = Image(self.grid, f"rubix-cube/images/{gridmap[i][t]}.png", 200, 220, True, "C")
+                self.grid.addWidget(gridItem, i, t) 
+        
