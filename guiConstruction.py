@@ -127,16 +127,4 @@ class Grid(QGridLayout):
     def __init__(self, parent):
         super().__init__()
 
-        parent.addLayout(self)
-
-class Rubix_Face():
-
-    def __init__(self, parent, gridmap):
-        self.grid = Grid(parent)
-        self.grid.setSpacing(5)
-
-        for i in range(0, 3):
-            for t in range(0, 3):
-                gridItem = Image(self.grid, f"rubix-cube/images/{gridmap[i][t]}.png", 200, 220, True, "C")
-                self.grid.addWidget(gridItem, i, t) 
-        
+        parent.addLayout(self)       

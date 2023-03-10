@@ -1,5 +1,6 @@
 from random import randint, choice
-from guiConstruction import Main_Window, Button, Label, Image, Rubix_Face
+from PyQt5 import QtCore
+from guiConstruction import Main_Window, Button, Label, Image, Grid
 
 class Face():
 
@@ -90,6 +91,27 @@ def scramble(face1, face2, face3, face4, face5, face6):
     
     print(" ")
 
+class Rubix_Face():
+
+    def __init__(self, parent, gridmap):
+        self.grid = Grid(parent)
+        self.grid.setSpacing(3)
+
+        for i in range(0, 3):
+            for t in range(0, 3):
+                gridItem = Image(self.grid, f"rubix-cube/images/{gridmap[i][t]}.png", 100, 100, True, "L")
+                self.grid.addWidget(gridItem, i+1, t)
+        
+        for i in range(0, 3):
+            button = Button(self.grid, button_Determine, "PUSH")
+            self.grid.addWidget(button, i+1, 3, alignment=QtCore.Qt.AlignLeft)
+
+            button2 = Button(self.grid, button_Determine, "PUSH")
+            self.grid.addWidget(button2, 0, i)
+
+def button_Determine(row, direction):
+    pass
+
 face1 = Face()
 face2 = Face()
 face3 = Face()
@@ -121,6 +143,6 @@ mainWin = Main_Window("Rubik's Cube!", 500, 500)
 selectedFace = face1
 
 label = Label(mainWin.lay, str(selectedFace.squaresH), "L")
-Face1 = Rubix_Face(mainWin.lay, selectedFace.squaresH)
+mainFace = Rubix_Face(mainWin.lay, selectedFace.squaresH)
 
 mainWin.app.exit(mainWin.app.exec_())
