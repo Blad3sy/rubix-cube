@@ -93,24 +93,52 @@ def scramble(face1, face2, face3, face4, face5, face6):
 
 class Rubix_Face():
 
-    def __init__(self, parent, gridmap):
-        self.grid = Grid(parent)
+    def __init__(self, parent, gridmap, baseFace):
+        self.parent = parent
+        self.grid = Grid(self.parent)
         self.grid.setSpacing(3)
 
-        for i in range(0, 3):
-            for t in range(0, 3):
-                gridItem = Image(self.grid, f"rubix-cube/images/{gridmap[i][t]}.png", 100, 100, True, "L")
-                self.grid.addWidget(gridItem, i+1, t)
-        
-        for i in range(0, 3):
-            button = Button(self.grid, button_Determine, "PUSH")
-            self.grid.addWidget(button, i+1, 3, alignment=QtCore.Qt.AlignLeft)
+        self.gridmap = gridmap
+        self.baseFace = baseFace
 
-            button2 = Button(self.grid, button_Determine, "PUSH")
+        self.faceToPush = baseFace
+        self.directionToPush = "R"
+        self.columnToPush = 1
+
+        self.add_Grid_Elements()
+
+    def add_Grid_Elements(self):
+        for i in range(1, 4):
+            for t in range(1, 4):
+                gridItem = Image(self.grid, f"rubix-cube/images/{self.gridmap[i-1][t-1]}.png", 100, 100, True, "L")
+                self.grid.addWidget(gridItem, i, t)
+        
+        for i in range(1, 4):
+            button = Button(self.grid, self.button_Func, "PUSH")
+            self.grid.addWidget(button, i, 4, alignment=QtCore.Qt.AlignLeft)
+
+            button2 = Button(self.grid, self.button_Func, "PUSH")
             self.grid.addWidget(button2, 0, i)
 
-def button_Determine(row, direction):
-    pass
+            button3 = Button(self.grid, self.button_Func, "PUSH")
+            self.grid.addWidget(button3, i, 0)
+
+            button4 = Button(self.grid, self.button_Func, "PUSH")
+            self.grid.addWidget(button4, 4, i)
+
+    def button_Func(self):
+        self.faceToPush.push(self.directionToPush, self.columnToPush)
+        
+        nullNotFound = False
+
+        while nullNotFound:
+            deleter = self.grid.findChild()
+            if deleter == None:
+                nullNotFound = False
+            else:
+                deleter.delete()
+        
+        self.add_Grid_Elements()
 
 face1 = Face()
 face2 = Face()
@@ -132,17 +160,9 @@ face6.__init__(face2, face4, face1, face3, face5)
 
 scramble(face1, face2, face3, face4, face5, face6)
 
-print(face1.squaresH)
-print(face2.squaresH)
-print(face3.squaresH)
-print(face4.squaresH)
-print(face5.squaresH)
-print(face6.squaresH)
-
 mainWin = Main_Window("Rubik's Cube!", 500, 500)
 selectedFace = face1
 
-label = Label(mainWin.lay, str(selectedFace.squaresH), "L")
-mainFace = Rubix_Face(mainWin.lay, selectedFace.squaresH)
+mainFace = Rubix_Face(mainWin.lay, selectedFace.squaresH, selectedFace)
 
 mainWin.app.exit(mainWin.app.exec_())

@@ -126,5 +126,7 @@ class Grid(QGridLayout):
 
     def __init__(self, parent):
         super().__init__()
+        self.trueParent = super()
+        self.parent = parent
 
-        parent.addLayout(self)       
+        self.parent.addLayout(self)  
