@@ -102,8 +102,6 @@ class Rubix_Face():
         self.baseFace = baseFace
 
         self.faceToPush = baseFace
-        self.directionToPush = "R"
-        self.columnToPush = 1
 
         self.add_Grid_Elements()
 
@@ -112,22 +110,49 @@ class Rubix_Face():
             for t in range(1, 4):
                 gridItem = Image(self.grid, f"rubix-cube/images/{self.gridmap[i-1][t-1]}.png", 100, 100, True, "L")
                 self.grid.addWidget(gridItem, i, t)
-        
-        for i in range(1, 4):
-            button = Button(self.grid, self.button_Func, "PUSH")
-            self.grid.addWidget(button, i, 4, alignment=QtCore.Qt.AlignLeft)
 
-            button2 = Button(self.grid, self.button_Func, "PUSH")
-            self.grid.addWidget(button2, 0, i)
+        button = Button(self.grid, lambda: self.button_Push("U", 0), "PUSH")
+        self.grid.addWidget(button, 0, 1, alignment=QtCore.Qt.AlignBottom)
 
-            button3 = Button(self.grid, self.button_Func, "PUSH")
-            self.grid.addWidget(button3, i, 0)
+        button2 = Button(self.grid, lambda: self.button_Push("U", 1), "PUSH")
+        self.grid.addWidget(button2, 0, 2, alignment=QtCore.Qt.AlignBottom)
 
-            button4 = Button(self.grid, self.button_Func, "PUSH")
-            self.grid.addWidget(button4, 4, i)
+        button3 = Button(self.grid, lambda: self.button_Push("U", 2), "PUSH")
+        self.grid.addWidget(button3, 0, 3, alignment=QtCore.Qt.AlignBottom)
 
-    def button_Func(self):
-        self.faceToPush.push(self.directionToPush, self.columnToPush)
+        button4 = Button(self.grid, lambda: self.button_Push("L", 0), "PUSH")
+        self.grid.addWidget(button4, 1, 0, alignment=QtCore.Qt.AlignRight)
+
+        button5 = Button(self.grid, lambda: self.button_Push("L", 1), "PUSH")
+        self.grid.addWidget(button5, 2, 0, alignment=QtCore.Qt.AlignRight)
+
+        button6 = Button(self.grid, lambda: self.button_Push("L", 2), "PUSH")
+        self.grid.addWidget(button6, 3, 0, alignment=QtCore.Qt.AlignRight)
+
+        button7 = Button(self.grid, lambda: self.button_Push("D", 0), "PUSH")
+        self.grid.addWidget(button7, 4, 1, alignment=QtCore.Qt.AlignTop)
+
+        button8 = Button(self.grid, lambda: self.button_Push("D", 1), "PUSH")
+        self.grid.addWidget(button8, 4, 2, alignment=QtCore.Qt.AlignTop)
+
+        button9 = Button(self.grid, lambda: self.button_Push("D", 2), "PUSH")
+        self.grid.addWidget(button9, 4, 3, alignment=QtCore.Qt.AlignTop)
+
+        button10 = Button(self.grid, lambda: self.button_Push("R", 0), "PUSH")
+        self.grid.addWidget(button10, 1, 4, alignment=QtCore.Qt.AlignLeft)
+
+        button11 = Button(self.grid, lambda: self.button_Push("R", 1), "PUSH")
+        self.grid.addWidget(button11, 2, 4, alignment=QtCore.Qt.AlignLeft)
+
+        button12 = Button(self.grid, lambda: self.button_Push("R", 2), "PUSH")
+        self.grid.addWidget(button12, 3, 4, alignment=QtCore.Qt.AlignLeft)
+
+        button13 = Button(self.grid.parent, self.button_Change_Face, "CHANGE FACE")
+        self.grid.addWidget(button13, 5, 2, alignment=QtCore.Qt.AlignCenter)
+
+    
+    def button_Push(self, direction, colrow):
+        self.faceToPush.push(direction, colrow)
         
         nullNotFound = False
 
@@ -139,13 +164,46 @@ class Rubix_Face():
                 deleter.delete()
         
         self.add_Grid_Elements()
+    
+    def button_Change_Face(self):
+
+        global selectedFaceNum
+        global selectedFace
+        global faceOrder
+
+        selectedFaceNum += 1
+        if selectedFaceNum == 5:
+            selectedFaceNum = 0
+        
+        selectedFace = faceOrder[selectedFaceNum]
+        self.gridmap = selectedFace.squaresH
+        self.baseFace = selectedFace
+
+        nullNotFound = False
+
+        while nullNotFound:
+            deleter = self.grid.findChild()
+            if deleter == None:
+                nullNotFound = False
+            else:
+                deleter.delete()
+            
+        self.add_Grid_Elements()
+
+faceOrder = []
 
 face1 = Face()
+faceOrder.append(face1)
 face2 = Face()
+faceOrder.append(face2)
 face3 = Face()
+faceOrder.append(face3)
 face4 = Face()
+faceOrder.append(face4)
 face5 = Face()
+faceOrder.append(face5)
 face6 = Face()
+faceOrder.append(face6)
 
 # ORDER IS LEFT RIGHT ABOVE BELOW OPPOSITE
 # REFERENCE IS HOLDING CUBE LOOKING AT FACE1
@@ -161,7 +219,8 @@ face6.__init__(face2, face4, face1, face3, face5)
 scramble(face1, face2, face3, face4, face5, face6)
 
 mainWin = Main_Window("Rubik's Cube!", 500, 500)
-selectedFace = face1
+selectedFaceNum = 0
+selectedFace = faceOrder[selectedFaceNum]
 
 mainFace = Rubix_Face(mainWin.lay, selectedFace.squaresH, selectedFace)
 
